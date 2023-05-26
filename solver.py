@@ -63,11 +63,11 @@ puzzle = [
     [0, 0, 0, 0, 8, 0, 0, 7, 9]
 ]
 
-solution = solve_sudoku(puzzle)
+# solution = solve_sudoku(puzzle)
 
-if solution:
-    print("Sudoku solved:")
-    for row in solution:
-        print(row)
-else:
-    print("No solution exists for the given Sudoku puzzle.")
+# if solution:
+#     print("Sudoku solved:")
+#     for row in solution:
+#         print(row)
+# else:
+#     print("No solution exists for the given Sudoku puzzle.")

@@ -72,6 +72,20 @@ def generate_sudoku_puzzle():
 
 ##Funtion for solving puzzle
 #
+def check_grid():
+    for row in range(9):
+        for col in range(9):
+            if grid[row][col]!=solvedPuzzle[row][col]:
+                #if grid[row][col]!=0:
+                    #display_text("The value "+str(grid[row][col])+" is an invalid input for row "+str(row+1)+" and column "+str(col+1)+"so it was deleted to solve puzzle")
+                    #pygame.display.update()
+                display_text("checking input")
+                delete_value(row, col, 0)
+                pygame.draw.rect(window, BLUE, (col* cell_size, row * cell_size, cell_size, cell_size), 2)
+                pygame.display.update()
+                time.sleep(.2)
+    bool=solve_sudoku()
+    return bool
 #
 def solve_sudoku():
     if is_complete(grid):
@@ -87,7 +101,7 @@ def solve_sudoku():
             draw_grid()
             draw_numbers()
             pygame.draw.rect(window, BLUE, (col * cell_size, row * cell_size, cell_size, cell_size), 2)
-
+            font = pygame.font.Font(None, 24)
             number = font.render(str(grid[row][col]), True, BLUE)
             number_rect = number.get_rect(center=(col * cell_size + cell_size // 2, row * cell_size + cell_size // 2))
             window.blit(number, number_rect)
@@ -219,13 +233,13 @@ def handle_button_click():
 
     elif position[0] >= window_width - 400 and position[1] >= window_height - 50:
         # Solve button clicked
-        solved = solve_sudoku()
+        solved=check_grid()
+        #solved = solve_sudoku()
         if solved:
             # Puzzle solved, update the grid and display it
             window.fill(WHITE)
             draw_grid()
             draw_numbers()
-            pygame.display.update()
             display_text("Puzzle Solved!")
             pygame.display.update()
             time.sleep(1)  # Add a small delay for visualization
@@ -242,16 +256,16 @@ def handle_button_click():
 
 
 # Set up the Sudoku grid
-
+user_input = [[0 for _ in range(grid_size)] for _ in range(grid_size)]
 grid  = [[0] * 9 for _ in range(9)]
 solve_grid=[[0] * 9 for _ in range(9)]
-generate_sudoku_puzzle()
 
+generate_sudoku_puzzle()
+solvedPuzzle=solver.solve_sudoku(solve_grid)
 # Create a copy of the original grid for solving
 solve_grid = [row[:] for row in grid]
 
 # Create a 2D list to store the user input
-user_input = [[0 for _ in range(grid_size)] for _ in range(grid_size)]
 
 # Run the Pygame event loop
 running = True
@@ -277,6 +291,7 @@ while running:
                     delete_value(selected_cell[0], selected_cell[1], 0)
                 elif event.key >= pygame.K_1 and event.key <= pygame.K_9:
                     number = int(event.unicode)
+                    response_text=""
                     update=update_grid(selected_cell[0], selected_cell[1], number)
                     if update == False:
                         response_text="The value "+str(number)+" is an invalid input for row "+str(selected_cell[0]+1)+" and column "+str(selected_cell[1]+1)
@@ -314,6 +329,6 @@ while running:
     window.blit(new_game_button_text, new_game_button_text_rect)
 
     display_text(response_text)
-    
+
     pygame.display.update() 
 pygame.quit()
