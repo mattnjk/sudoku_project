@@ -1,2 +1,2 @@
 # sudoku_project
-Fast Sudoku Solver in Python  T
+Fast Sudoku Solver in Python  
